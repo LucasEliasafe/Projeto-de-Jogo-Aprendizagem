@@ -4,8 +4,9 @@ import java.awt.Rectangle;
 public class Paddle {
     private int x, y, width, height;
     private int yVelocity;
-    private final int SPEED = 5;
+    private int speed;
     private boolean up, down;
+    private final int SPEED_INCREMENT = 1;
 
     public Paddle(int x, int y, int width, int height) {
         this.x = x;
@@ -13,6 +14,7 @@ public class Paddle {
         this.width = width;
         this.height = height;
         this.yVelocity = 0;
+        this.speed = 5;  // Velocidade inicial
     }
 
     public void setUp(boolean up) {
@@ -25,9 +27,9 @@ public class Paddle {
 
     public void move() {
         if (up) {
-            yVelocity = -SPEED;
+            yVelocity = -speed;
         } else if (down) {
-            yVelocity = SPEED;
+            yVelocity = speed;
         } else {
             yVelocity = 0;
         }
@@ -45,5 +47,9 @@ public class Paddle {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
+    }
+
+    public void increaseSpeed() {
+        speed += SPEED_INCREMENT;
     }
 }
