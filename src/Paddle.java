@@ -52,4 +52,12 @@ public class Paddle {
     public void increaseSpeed() {
         speed += SPEED_INCREMENT;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 }

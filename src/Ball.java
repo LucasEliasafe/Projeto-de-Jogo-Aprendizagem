@@ -24,12 +24,20 @@ public class Ball {
             yVelocity = -yVelocity;
         }
 
-        if (getBounds().intersects(leftPaddle.getBounds()) || getBounds().intersects(rightPaddle.getBounds())) {
-            xVelocity = -xVelocity;
+        // Verificar colisão com o paddle esquerdo
+        if (getBounds().intersects(leftPaddle.getBounds())) {
+            xVelocity = Math.abs(xVelocity);  // Garantir que a bola se mova para a direita
+            x = leftPaddle.getX() + leftPaddle.getWidth();  // Empurrar a bola para fora do paddle
+        }
+
+        // Verificar colisão com o paddle direito
+        if (getBounds().intersects(rightPaddle.getBounds())) {
+            xVelocity = -Math.abs(xVelocity);  // Garantir que a bola se mova para a esquerda
+            x = rightPaddle.getX() - width;  // Empurrar a bola para fora do paddle
         }
 
         if (x <= 0 || x >= 800 - width) {
-          reset();
+            reset();
         }
     }
 
@@ -47,6 +55,7 @@ public class Ball {
         } else {
             xVelocity -= SPEED_INCREMENT;
         }
+
         if (yVelocity > 0) {
             yVelocity += SPEED_INCREMENT;
         } else {
@@ -56,7 +65,7 @@ public class Ball {
 
     public void reset() {
         x = 400 - width / 2;
-        y = 400 - height / 2;
+        y = 300 - height / 2;
         xVelocity = INITIAL_SPEED;
         yVelocity = INITIAL_SPEED;
     }
