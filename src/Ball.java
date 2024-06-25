@@ -29,9 +29,7 @@ public class Ball {
         }
 
         if (x <= 0 || x >= 800 - width) {
-            x = 400 - width / 2;
-            y = 300 - height / 2;
-            xVelocity = -xVelocity;
+          reset();
         }
     }
 
@@ -54,5 +52,12 @@ public class Ball {
         } else {
             yVelocity -= SPEED_INCREMENT;
         }
+    }
+
+    public void reset() {
+        x = 400 - width / 2;
+        y = 400 - height / 2;
+        xVelocity = INITIAL_SPEED;
+        yVelocity = INITIAL_SPEED;
     }
 }
