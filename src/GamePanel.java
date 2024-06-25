@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private final int BALL_SIZE = 20;
     private Paddle leftPaddle, rightPaddle;
     private Ball ball;
-    private Timer gametimer, speedIncreaseTimer;
+    private Timer gameTimer, speedIncreaseTimer;
 
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -24,13 +24,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         rightPaddle = new Paddle(WIDTH - 20, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
         ball = new Ball(WIDTH / 2 - BALL_SIZE / 2, HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
 
-        timer = new Timer(16, this);
+        gameTimer = new Timer(16, this);
+        speedIncreaseTimer = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ball.increaseSpeed();
+            }
+        });
         addKeyListener(this);
         setFocusable(true);
     }
 
     public void startGame() {
-        timer.start();
+        gameTimer.start();
+        speedIncreaseTimer.start();
     }
 
     @Override

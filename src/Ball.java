@@ -4,15 +4,16 @@ import java.awt.Rectangle;
 public class Ball {
     private int x, y, width, height;
     private int xVelocity, yVelocity;
-    private final int SPEED = 5;
+    private final int INITIAL_SPEED = 5;
+    private final int SPEED_INCREMENT = 1;
 
     public Ball(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.xVelocity = SPEED;
-        this.yVelocity = SPEED;
+        this.xVelocity = INITIAL_SPEED;
+        this.yVelocity = INITIAL_SPEED;
     }
 
     public void move(Paddle leftPaddle, Paddle rightPaddle) {
@@ -40,5 +41,18 @@ public class Ball {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
+    }
+
+    public void increaseSpeed() {
+        if (xVelocity > 0) {
+            xVelocity += SPEED_INCREMENT;
+        } else {
+            xVelocity -= SPEED_INCREMENT;
+        }
+        if (yVelocity > 0) {
+            yVelocity += SPEED_INCREMENT;
+        } else {
+            yVelocity -= SPEED_INCREMENT;
+        }
     }
 }
