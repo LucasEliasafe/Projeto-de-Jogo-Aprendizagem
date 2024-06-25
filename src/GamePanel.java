@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private final int BALL_SIZE = 20;
     private Paddle leftPaddle, rightPaddle;
     private Ball ball;
-    private Timer timer;
+    private Timer gametimer, speedIncreaseTimer;
 
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
