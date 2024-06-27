@@ -24,20 +24,19 @@ public class Ball {
             yVelocity = -yVelocity;
         }
 
-
         if (getBounds().intersects(leftPaddle.getBounds())) {
-            xVelocity = Math.abs(xVelocity);  // Garantir que a bola se mova para a direita
-            x = leftPaddle.getX() + leftPaddle.getWidth();  // Empurrar a bola para fora do paddle
+            xVelocity = Math.abs(xVelocity);
+            x = leftPaddle.getX() + leftPaddle.getWidth();
         }
 
-
         if (getBounds().intersects(rightPaddle.getBounds())) {
-            xVelocity = -Math.abs(xVelocity);  // Garantir que a bola se mova para a esquerda
-            x = rightPaddle.getX() - width;  // Empurrar a bola para fora do paddle
+            xVelocity = -Math.abs(xVelocity);
+            x = rightPaddle.getX() - width;
         }
 
         if (x <= 0 || x >= 800 - width) {
-            reset();
+            // O código para atualizar o placar será feito na classe GamePanel
+            return;
         }
     }
 
