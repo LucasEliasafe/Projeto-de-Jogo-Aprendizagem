@@ -24,13 +24,13 @@ public class Ball {
             yVelocity = -yVelocity;
         }
 
-        // Verificar colisão com o paddle esquerdo
+
         if (getBounds().intersects(leftPaddle.getBounds())) {
             xVelocity = Math.abs(xVelocity);  // Garantir que a bola se mova para a direita
             x = leftPaddle.getX() + leftPaddle.getWidth();  // Empurrar a bola para fora do paddle
         }
 
-        // Verificar colisão com o paddle direito
+
         if (getBounds().intersects(rightPaddle.getBounds())) {
             xVelocity = -Math.abs(xVelocity);  // Garantir que a bola se mova para a esquerda
             x = rightPaddle.getX() - width;  // Empurrar a bola para fora do paddle
@@ -68,5 +68,13 @@ public class Ball {
         y = 300 - height / 2;
         xVelocity = INITIAL_SPEED;
         yVelocity = INITIAL_SPEED;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }

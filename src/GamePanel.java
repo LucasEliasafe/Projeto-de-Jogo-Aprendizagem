@@ -14,25 +14,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private final int BALL_SIZE = 20;
     private Paddle leftPaddle, rightPaddle;
     private Ball ball;
+    private Scoreboard scoreboard;
     private Timer gameTimer, speedIncreaseTimer, paddleSpeedIncreaseTimer;
 
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setBackground(Color.BLUE);
+        setBackground(Color.BLACK);
 
         leftPaddle = new Paddle(10, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
         rightPaddle = new Paddle(WIDTH - 20, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
         ball = new Ball(WIDTH / 2 - BALL_SIZE / 2, HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
+        scoreboard = new Scoreboard();
 
         gameTimer = new Timer(16, this);
-        speedIncreaseTimer = new Timer(5000, new ActionListener() {
+        speedIncreaseTimer = new Timer(5000, new ActionListener() {  // Aumenta a velocidade da bola a cada 5 segundos
             @Override
             public void actionPerformed(ActionEvent e) {
                 ball.increaseSpeed();
             }
         });
-
-        paddleSpeedIncreaseTimer = new Timer (5000, new ActionListener() {
+        paddleSpeedIncreaseTimer = new Timer(5000, new ActionListener() {  // Aumenta a velocidade das palhetas a cada 5 segundos
             @Override
             public void actionPerformed(ActionEvent e) {
                 leftPaddle.increaseSpeed();
@@ -58,6 +59,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         leftPaddle.draw(g);
         rightPaddle.draw(g);
         ball.draw(g);
+        scoreboard.draw(g, WIDTH, HEIGHT);
     }
 
     @Override
@@ -65,6 +67,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         leftPaddle.move();
         rightPaddle.move();
         ball.move(leftPaddle, rightPaddle);
+
+        if (ball.getX() <= 0) {
+            scoreboard.player2Scores();
+            ball.reset();
+        } else if (ball.getX() >= WIDTH - ball.getWidth()) {
+            scoreboard.player1Scores();
+            ball.reset();
+        }
+
         repaint();
     }
 
@@ -79,6 +90,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             rightPaddle.setUp(true);
         } else if (key == KeyEvent.VK_DOWN) {
             rightPaddle.setDown(true);
+        } else if (key == KeyEvent.VK_R) {
+            scoreboard.reset();  // Resetar o placar quando a tecla 'R' for pressionada
         }
     }
 
