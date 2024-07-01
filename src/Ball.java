@@ -35,7 +35,7 @@ public class Ball {
         }
 
         if (x <= 0 || x >= 800 - width) {
-            // O código para atualizar o placar será feito na classe GamePanel
+
             return;
         }
     }

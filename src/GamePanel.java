@@ -24,13 +24,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             scoreboard = new Scoreboard();
 
             gameTimer = new Timer(16, this);
-            speedIncreaseTimer = new Timer(5000, new ActionListener() {  // Aumenta a velocidade da bola a cada 5 segundos
+            speedIncreaseTimer = new Timer(5000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ball.increaseSpeed();
                 }
             });
-            paddleSpeedIncreaseTimer = new Timer(5000, new ActionListener() {  // Aumenta a velocidade das palhetas a cada 5 segundos
+            paddleSpeedIncreaseTimer = new Timer(5000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     leftPaddle.increaseSpeed();
@@ -38,7 +38,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                 }
             });
 
-            resetButton = new JButton("Reset Score");
+
+
+            resetButton = new JButton("Reset Score") {
+                @Override
+                public void paintComponent(Graphics g) {
+                    if (getModel().isRollover()) {
+                        super.paintComponent(g);
+                    } else {
+                        Graphics2D g2d = (Graphics2D) g;
+                        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.f));
+                        super.paintComponent(g);
+                        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+                    }
+                }
+            };
+
             resetButton.setBounds(WIDTH / 2 - 75, HEIGHT - 590, 150, 40);
             resetButton.addActionListener(new ActionListener() {
                 @Override
