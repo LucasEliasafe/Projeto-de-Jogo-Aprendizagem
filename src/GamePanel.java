@@ -13,6 +13,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private Scoreboard scoreboard;
     private Timer gameTimer, speedIncreaseTimer, paddleSpeedIncreaseTimer;
     private JButton resetButton;
+    private AutoPaddle autoPaddle1, autoPaddle2;
 
     public GamePanel() {
             setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -23,6 +24,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             ball = new Ball(WIDTH / 2 - BALL_SIZE / 2, HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
             scoreboard = new Scoreboard();
 
+            autoPaddle1 = new AutoPaddle(WIDTH / 2 - 100, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+            autoPaddle2 = new AutoPaddle(WIDTH / 2 + 90, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+
             gameTimer = new Timer(16, this);
             speedIncreaseTimer = new Timer(5000, new ActionListener() {
                 @Override
@@ -30,6 +34,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                     ball.increaseSpeed();
                 }
             });
+
             paddleSpeedIncreaseTimer = new Timer(5000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -92,6 +97,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         leftPaddle.draw(g);
         rightPaddle.draw(g);
         ball.draw(g);
+        autoPaddle1.draw(g);
+        autoPaddle2.draw(g);
         scoreboard.draw(g, WIDTH, HEIGHT);
     }
 
@@ -100,6 +107,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         leftPaddle.move();
         rightPaddle.move();
         ball.move(leftPaddle, rightPaddle);
+
+        autoPaddle1.move();
+        autoPaddle2.move();
 
         if (ball.getX() <= 0) {
             scoreboard.player2Scores();
