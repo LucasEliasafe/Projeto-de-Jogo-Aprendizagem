@@ -14,7 +14,7 @@ public class Scoreboard {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 36));
 
-        // Desenhar as pontuações dos jogadores
+
         g.drawString(String.valueOf(player1Score), width / 4, 50);
         g.drawString(String.valueOf(player2Score), 3 * width / 4, 50);
     }

@@ -1,10 +1,6 @@
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Timer;
+import java.awt.event.*;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private final int WIDTH = 800;
@@ -16,39 +12,61 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private Ball ball;
     private Scoreboard scoreboard;
     private Timer gameTimer, speedIncreaseTimer, paddleSpeedIncreaseTimer;
+    private JButton resetButton;
 
     public GamePanel() {
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setBackground(Color.BLACK);
+            setPreferredSize(new Dimension(WIDTH, HEIGHT));
+            setBackground(Color.BLACK);
 
-        leftPaddle = new Paddle(10, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
-        rightPaddle = new Paddle(WIDTH - 20, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
-        ball = new Ball(WIDTH / 2 - BALL_SIZE / 2, HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
-        scoreboard = new Scoreboard();
+            leftPaddle = new Paddle(10, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+            rightPaddle = new Paddle(WIDTH - 20, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+            ball = new Ball(WIDTH / 2 - BALL_SIZE / 2, HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
+            scoreboard = new Scoreboard();
 
-        gameTimer = new Timer(16, this);
-        speedIncreaseTimer = new Timer(5000, new ActionListener() {  // Aumenta a velocidade da bola a cada 5 segundos
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ball.increaseSpeed();
-            }
-        });
-        paddleSpeedIncreaseTimer = new Timer(5000, new ActionListener() {  // Aumenta a velocidade das palhetas a cada 5 segundos
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                leftPaddle.increaseSpeed();
-                rightPaddle.increaseSpeed();
-            }
-        });
+            gameTimer = new Timer(16, this);
+            speedIncreaseTimer = new Timer(5000, new ActionListener() {  // Aumenta a velocidade da bola a cada 5 segundos
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ball.increaseSpeed();
+                }
+            });
+            paddleSpeedIncreaseTimer = new Timer(5000, new ActionListener() {  // Aumenta a velocidade das palhetas a cada 5 segundos
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    leftPaddle.increaseSpeed();
+                    rightPaddle.increaseSpeed();
+                }
+            });
 
-        addKeyListener(this);
-        setFocusable(true);
+            resetButton = new JButton("Reset Score");
+            resetButton.setBounds(WIDTH / 2 - 75, HEIGHT - 590, 150, 40);
+            resetButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    scoreboard.reset();
+                    requestFocusInWindow();
+                }
+            });
+
+            resetButton.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusLost(FocusEvent e) {
+                    requestFocusInWindow();
+                }
+            });
+
+            setLayout(null);
+            add(resetButton);
+
+            addKeyListener(this);
+            setFocusable(true);
     }
 
     public void startGame() {
         gameTimer.start();
         speedIncreaseTimer.start();
         paddleSpeedIncreaseTimer.start();
+        requestFocusInWindow();
     }
 
     @Override
@@ -91,7 +109,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         } else if (key == KeyEvent.VK_DOWN) {
             rightPaddle.setDown(true);
         } else if (key == KeyEvent.VK_R) {
-            scoreboard.reset();  // Resetar o placar quando a tecla 'R' for pressionada
+            scoreboard.reset();  //
         }
     }
 

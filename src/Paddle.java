@@ -14,7 +14,7 @@ public class Paddle {
         this.width = width;
         this.height = height;
         this.yVelocity = 0;
-        this.speed = 5;  // Velocidade inicial
+        this.speed = 5;
     }
 
     public void setUp(boolean up) {
