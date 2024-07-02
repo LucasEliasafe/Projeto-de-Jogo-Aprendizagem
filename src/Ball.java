@@ -38,14 +38,14 @@ public class Ball {
 
 
         if (getBounds().intersects(autoPaddle1.getBounds())) {
-            xVelocity = -Math.abs(xVelocity);
+            xVelocity = Math.abs(xVelocity);
             x = autoPaddle1.getX() + autoPaddle1.getWidth();
         }
 
 
         if (getBounds().intersects(autoPaddle2.getBounds())) {
             xVelocity = Math.abs(xVelocity);
-            x = autoPaddle2.getX() - width;
+            x = autoPaddle2.getX() + autoPaddle1.getWidth();
         }
 
         if (x <= 0 || x >= 800 - width) {
