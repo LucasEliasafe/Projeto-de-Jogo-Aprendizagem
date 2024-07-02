@@ -16,7 +16,7 @@ public class Ball {
         this.yVelocity = INITIAL_SPEED;
     }
 
-    public void move(Paddle leftPaddle, Paddle rightPaddle) {
+    public void move(Paddle leftPaddle, Paddle rightPaddle, AutoPaddle autoPaddle1, AutoPaddle autoPaddle2) {
         x += xVelocity;
         y += yVelocity;
 
@@ -24,18 +24,31 @@ public class Ball {
             yVelocity = -yVelocity;
         }
 
+
         if (getBounds().intersects(leftPaddle.getBounds())) {
             xVelocity = Math.abs(xVelocity);
             x = leftPaddle.getX() + leftPaddle.getWidth();
         }
+
 
         if (getBounds().intersects(rightPaddle.getBounds())) {
             xVelocity = -Math.abs(xVelocity);
             x = rightPaddle.getX() - width;
         }
 
-        if (x <= 0 || x >= 800 - width) {
 
+        if (getBounds().intersects(autoPaddle1.getBounds())) {
+            xVelocity = -Math.abs(xVelocity);
+            x = autoPaddle1.getX() + autoPaddle1.getWidth();
+        }
+
+
+        if (getBounds().intersects(autoPaddle2.getBounds())) {
+            xVelocity = Math.abs(xVelocity);
+            x = autoPaddle2.getX() - width;
+        }
+
+        if (x <= 0 || x >= 800 - width) {
             return;
         }
     }
@@ -73,7 +86,15 @@ public class Ball {
         return x;
     }
 
+    public int getY() {
+        return y;
+    }
+
     public int getWidth() {
         return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

@@ -16,70 +16,68 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private AutoPaddle autoPaddle1, autoPaddle2;
 
     public GamePanel() {
-            setPreferredSize(new Dimension(WIDTH, HEIGHT));
-            setBackground(Color.BLACK);
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setBackground(Color.BLACK);
 
-            leftPaddle = new Paddle(10, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
-            rightPaddle = new Paddle(WIDTH - 20, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
-            ball = new Ball(WIDTH / 2 - BALL_SIZE / 2, HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
-            scoreboard = new Scoreboard();
+        leftPaddle = new Paddle(10, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+        rightPaddle = new Paddle(WIDTH - 20, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+        ball = new Ball(WIDTH / 2 - BALL_SIZE / 2, HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
+        scoreboard = new Scoreboard();
 
-            autoPaddle1 = new AutoPaddle(WIDTH / 2 - 100, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
-            autoPaddle2 = new AutoPaddle(WIDTH / 2 + 90, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+        autoPaddle1 = new AutoPaddle(WIDTH / 2 - PADDLE_WIDTH - 100, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+        autoPaddle2 = new AutoPaddle(WIDTH / 2 + 100, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
 
-            gameTimer = new Timer(16, this);
-            speedIncreaseTimer = new Timer(5000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ball.increaseSpeed();
+        gameTimer = new Timer(16, this);
+        speedIncreaseTimer = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ball.increaseSpeed();
+            }
+        });
+
+        paddleSpeedIncreaseTimer = new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                leftPaddle.increaseSpeed();
+                rightPaddle.increaseSpeed();
+            }
+        });
+
+        resetButton = new JButton("Reset Score") {
+            @Override
+            public void paintComponent(Graphics g) {
+                if (getModel().isRollover()) {
+                    super.paintComponent(g);
+                } else {
+                    Graphics2D g2d = (Graphics2D) g;
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.f));
+                    super.paintComponent(g);
+                    g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
                 }
-            });
+            }
+        };
 
-            paddleSpeedIncreaseTimer = new Timer(5000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    leftPaddle.increaseSpeed();
-                    rightPaddle.increaseSpeed();
-                }
-            });
+        resetButton.setBounds(WIDTH / 2 - 75, HEIGHT - 590, 150, 40);
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                scoreboard.reset();
+                requestFocusInWindow();
+            }
+        });
 
+        resetButton.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                requestFocusInWindow();
+            }
+        });
 
+        setLayout(null);
+        add(resetButton);
 
-            resetButton = new JButton("Reset Score") {
-                @Override
-                public void paintComponent(Graphics g) {
-                    if (getModel().isRollover()) {
-                        super.paintComponent(g);
-                    } else {
-                        Graphics2D g2d = (Graphics2D) g;
-                        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.f));
-                        super.paintComponent(g);
-                        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-                    }
-                }
-            };
-
-            resetButton.setBounds(WIDTH / 2 - 75, HEIGHT - 590, 150, 40);
-            resetButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    scoreboard.reset();
-                    requestFocusInWindow();
-                }
-            });
-
-            resetButton.addFocusListener(new FocusAdapter() {
-                @Override
-                public void focusLost(FocusEvent e) {
-                    requestFocusInWindow();
-                }
-            });
-
-            setLayout(null);
-            add(resetButton);
-
-            addKeyListener(this);
-            setFocusable(true);
+        addKeyListener(this);
+        setFocusable(true);
     }
 
     public void startGame() {
@@ -106,10 +104,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public void actionPerformed(ActionEvent e) {
         leftPaddle.move();
         rightPaddle.move();
-        ball.move(leftPaddle, rightPaddle);
-
-        autoPaddle1.move();
-        autoPaddle2.move();
+        autoPaddle1.move(ball);
+        autoPaddle2.move(ball);
+        ball.move(leftPaddle, rightPaddle, autoPaddle1, autoPaddle2);
 
         if (ball.getX() <= 0) {
             scoreboard.player2Scores();
@@ -134,7 +131,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         } else if (key == KeyEvent.VK_DOWN) {
             rightPaddle.setDown(true);
         } else if (key == KeyEvent.VK_R) {
-            scoreboard.reset();  //
+            scoreboard.reset();
         }
     }
 
