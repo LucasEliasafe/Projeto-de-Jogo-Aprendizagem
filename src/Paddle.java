@@ -53,6 +53,10 @@ public class Paddle {
         speed += SPEED_INCREMENT;
     }
 
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     public int getX() {
         return x;
     }

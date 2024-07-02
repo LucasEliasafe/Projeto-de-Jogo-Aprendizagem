@@ -32,6 +32,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ball.increaseSpeed();
+                leftPaddle.setSpeed(ball.getSpeed());
+                rightPaddle.setSpeed(ball.getSpeed());
             }
         });
 
@@ -62,6 +64,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 scoreboard.reset();
+                ball.reset();
+                requestFocusInWindow();
+                leftPaddle.setSpeed(5);
+                rightPaddle.setSpeed(5);
                 requestFocusInWindow();
             }
         });
@@ -132,6 +138,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             rightPaddle.setDown(true);
         } else if (key == KeyEvent.VK_R) {
             scoreboard.reset();
+            ball.reset();
+            leftPaddle.setSpeed(5);
+            rightPaddle.setSpeed(5);
         }
     }
 

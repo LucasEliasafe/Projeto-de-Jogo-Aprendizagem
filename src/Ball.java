@@ -97,4 +97,8 @@ public class Ball {
     public int getHeight() {
         return height;
     }
+
+    public int getSpeed() {
+        return Math.abs(xVelocity);
+    }
 }
