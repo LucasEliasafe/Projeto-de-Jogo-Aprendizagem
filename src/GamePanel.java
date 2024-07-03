@@ -24,8 +24,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         ball = new Ball(WIDTH / 2 - BALL_SIZE / 2, HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE);
         scoreboard = new Scoreboard();
 
-        autoPaddle1 = new AutoPaddle(WIDTH / 2 - PADDLE_WIDTH - 100, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
-        autoPaddle2 = new AutoPaddle(WIDTH / 2 + 100, HEIGHT / 2 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+        autoPaddle1 = new AutoPaddle(WIDTH / 2 - PADDLE_WIDTH - 100, HEIGHT / 4 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
+        autoPaddle2 = new AutoPaddle(WIDTH / 2 + 90, 3 * HEIGHT / 4 - PADDLE_HEIGHT / 2, PADDLE_WIDTH, PADDLE_HEIGHT);
 
         gameTimer = new Timer(16, this);
         speedIncreaseTimer = new Timer(5000, new ActionListener() {
